@@ -82,7 +82,6 @@ def make_rpn(input_numbers):
   """
   result = []
   for elem in itertools.permutations(input_numbers):
-    elem = [1, 2, 3]
     result.append(list(exprs([], 0, elem, '+*/-')))
   return result
 
