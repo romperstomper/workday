@@ -1,11 +1,26 @@
 import itertools
-import time;
 import operator
 import random
 import sys
 
 
-def exprs(expr, stack_depth, vals, ops):
+def make_rpn(input_numbers, ops):
+  """Calculate the value of the expression passed in.
+
+  Args:
+    input: (list) expression in postfix to evaluate.
+    ops: (str) possible operators to choose from.
+
+  Returns:
+    (int) total calculated or 0.
+  """
+  result = []
+  for elem in itertools.permutations(input_numbers):
+    result.append(list(exprs([], 0, elem, ops)))
+  return result
+
+
+def exprs(expr, stack_depth, vals, ops='+*/-'):
   """ Generate postfix expressions recursively.
 
   Args:
@@ -71,37 +86,21 @@ def calculate(inputs):
     return 0
 
 
-def make_rpn(input_numbers):
-  """Calculate the value of the expression passed in.
-
-  Args:
-    input: (list) expression in postfix to evaluate.
-
-  Returns:
-    (int) total calculated or 0.
-  """
-  result = []
-  for elem in itertools.permutations(input_numbers):
-    result.append(list(exprs([], 0, elem, '+*/-')))
-  return result
-
-def main(n):
+def main():
+  n = 5  # Number of tiles to use.
   result = {}
   best = (0, [])
   target = random.choice(range(101, 1000))
   input_numbers = random.sample(range(1, 101), n) 
   for i in range(2, n+1):
-    for operator_permutation in make_rpn(input_numbers[:i]):
+    for operator_permutation in make_rpn(input_numbers[:i], '+*/-'):
       for expression in operator_permutation:
         value = calculate(expression)
         if value == target:
           return value, expression, len(result)
-        if value:  # No op if value is 0.
-          result[tuple(expression)] = value 
 
-  return len(result)
+  return 'No result found for target %s' % target
 
 
 if __name__ == '__main__':
-  t0 = time.time()
-  print  main(int(sys.argv[1])), time.time() - t0
+  print main()
