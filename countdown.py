@@ -87,11 +87,17 @@ def calculate(inputs):
 
 
 def main():
-  n = 5  # Number of tiles to use.
+  if len(sys.argv) != 8:
+    print 'need 7 numbers: 6 to operate on and the last one as a target'
+    sys.exit()
+  else:
+    input_numbers,target = map(int, sys.argv[1:7]), int(sys.argv[7])
+    print 'input numbers: %s' % input_numbers
+    print 'target number: %s' % target
+
+  n = 6  # Number of tiles to use.
   result = {}
   best = (0, [])
-  target = random.choice(range(101, 1000))
-  input_numbers = random.sample(range(1, 101), n) 
   for i in range(2, n+1):
     for operator_permutation in make_rpn(input_numbers[:i], '+*/-'):
       for expression in operator_permutation:
