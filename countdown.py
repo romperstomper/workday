@@ -96,14 +96,13 @@ def main():
     print 'target number: %s' % target
 
   n = 6  # Number of tiles to use.
-  result = {}
   best = (0, [])
   for i in range(2, n+1):
     for operator_permutation in make_rpn(input_numbers[:i], '+*/-'):
       for expression in operator_permutation:
         value = calculate(expression)
         if value == target:
-          return value, expression, len(result)
+          return value, expression
 
   return 'No result found for target %s' % target
 
